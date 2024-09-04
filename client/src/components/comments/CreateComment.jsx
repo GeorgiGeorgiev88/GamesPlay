@@ -2,7 +2,6 @@ import { useState } from "react";
 import * as gameService from "../../services/gameService";
 
 const FormValues = {
-  userName: "",
   comment: "",
 };
 
