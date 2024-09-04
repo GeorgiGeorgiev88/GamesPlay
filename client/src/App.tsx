@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -14,6 +13,7 @@ import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
 import GameDetail from "./components/gameDetail/GameDetail.jsx";
 import AuthContext from "./context/authContext.ts";
+import usePersistetState from "./components/hooks/usePersistedState.ts"
 
 interface AuthData {
   email: string;
@@ -22,10 +22,12 @@ interface AuthData {
 }
 
 function App() {
-  const [auth, setAuth] = useState(() => {
-    localStorage.removeItem("accessToken");
-    return {};
-  });
+  // const [auth, setAuth] = useState(() => {
+  //   localStorage.removeItem("accessToken");
+  //   return {};
+  // });
+
+  const [auth,setAuth] = usePersistetState("auth",{});
 
   const navigate = useNavigate();
 
