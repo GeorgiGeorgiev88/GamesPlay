@@ -1,4 +1,4 @@
-import { useState } from "react";
+import useForm from "../../components/hooks/useForm"; 
 import * as gameService from "../../services/gameService";
 
 const FormValues = {
@@ -6,46 +6,32 @@ const FormValues = {
 };
 
 export default function CreateComment({ gameId, onAddComment }) {
-  const [comment, setComment] = useState(FormValues);
+  const submitHandler = async (formData) => {
+    const commentWithId = { ...formData, gameId };
 
-  const changeHandler = (e) => {
-    const { name, value } = e.target;
-    setComment((prevComm) => ({ ...prevComm, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const commentWithId = { ...comment, gameId };
-   
     try {
-      if ( comment.comment === "") {
-        alert("The fild must be fill");
+      if (formData.comment === "") {
+        alert("The field must be filled");
         return;
       } else {
         const savedComment = await gameService.comment(commentWithId);
         onAddComment(savedComment);
-        setComment(FormValues);
       }
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
   };
 
+  const { values, onChange, onSubmit } = useForm(submitHandler, FormValues);
+
   return (
     <article className="create-comment">
       <label>Add new comment:</label>
-      <form className="form" onSubmit={handleSubmit}>
-        {/* <input
-          className="userNameInput"
-          name="userName"
-          value={comment.userName}
-          onChange={changeHandler}
-          placeholder="Username......"
-        /> */}
+      <form className="form" onSubmit={onSubmit}>
         <textarea
           name="comment"
-          value={comment.comment}
-          onChange={changeHandler}
+          value={values.comment}
+          onChange={onChange}
           placeholder="Comment......"
         />
         <input
@@ -57,3 +43,4 @@ export default function CreateComment({ gameId, onAddComment }) {
     </article>
   );
 }
+
