@@ -1,22 +1,17 @@
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-
 import * as gameService from "../../services/gameService";
-//import urlBuilder from "../../helper/urlBuilder";
 
 import Comments from "../comments/Comments";
 import CreateComment from "../comments/CreateComment";
 import AuthContext from "../../context/AuthContext";
 
 export default function GameDetail() {
-  const {email} = useContext(AuthContext);
+  const { _id: logUserId, email } = useContext(AuthContext); 
   const [game, setGame] = useState(null);
   const [comments, setComments] = useState([]);
-
   const { gameId } = useParams();
 
-  
- 
   useEffect(() => {
     gameService
       .getOne(gameId)
@@ -30,20 +25,21 @@ export default function GameDetail() {
   }, [gameId]);
 
   const handleAddComment = (newComment) => {
-    const commentWithAuthor = {
+    
+    const commentWithOwner = {
       ...newComment,
-      owner: { email }, 
+      owner: {
+        _id: logUserId,  
+        email,           
+      },
     };
-    setComments((prevComments) => [...prevComments, commentWithAuthor]);
+
+    setComments((prevComments) => [...prevComments, commentWithOwner]);
   };
 
   if (!game) {
     return <p>Loading...</p>;
   }
-
-  // const filteredComments = comments.filter(
-  //   (comment) => comment.gameId === gameId
-  // );
 
   return (
     <section id="game-details">

@@ -1,13 +1,21 @@
 import useForm from "../../components/hooks/useForm"; 
 import * as gameService from "../../services/gameService";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
 const FormValues = {
   comment: "",
 };
 
 export default function CreateComment({ gameId, onAddComment }) {
-  const submitHandler = async (formData) => {
-    const commentWithId = { ...formData, gameId };
+  const { _id: logUserId, email } = useContext(AuthContext);
+
+  const submitHandler = async (formData, resetForm) => {
+    const commentWithId = { 
+      ...formData, 
+      gameId, 
+      owner: { _id: logUserId, email } 
+    };
 
     try {
       if (formData.comment === "") {
@@ -16,13 +24,17 @@ export default function CreateComment({ gameId, onAddComment }) {
       } else {
         const savedComment = await gameService.comment(commentWithId);
         onAddComment(savedComment);
+        resetForm(); 
       }
     } catch (error) {
       console.error("Failed to add comment:", error);
     }
   };
 
-  const { values, onChange, onSubmit } = useForm(submitHandler, FormValues);
+  const { values, onChange, onSubmit, resetForm } = useForm(
+    (formData) => submitHandler(formData, resetForm), 
+    FormValues
+  );
 
   return (
     <article className="create-comment">
@@ -37,10 +49,11 @@ export default function CreateComment({ gameId, onAddComment }) {
         <input
           className="btn submit"
           type="submit"
-          defaultValue="Add Comment"
+          value="Add Comment"
         />
       </form>
     </article>
   );
 }
+
 

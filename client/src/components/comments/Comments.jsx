@@ -1,9 +1,25 @@
-export default function Comments({comment,owner:{email}}) {
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
-    return(
-        <li className="comment">
-        <p>{email}: {comment}</p>
-      </li>
-    )
-    
+export default function Comments({
+  comment,
+  owner: { email, _id: creatorId },
+}) {
+  const { _id: logUserId } = useContext(AuthContext);
+
+  return (
+    <li className="comment">
+      <p>
+        {email}: {comment}
+      </p>
+      {logUserId === creatorId ? (
+        <div className="buttons">
+          <a href="#" className="button">
+            Delete
+          </a>
+        </div>
+      ) : null}
+    </li>
+  );
 }
+
