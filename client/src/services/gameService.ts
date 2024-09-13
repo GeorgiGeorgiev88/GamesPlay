@@ -38,6 +38,10 @@ export const create = async (gameData: GameData) => {
   return result;
 };
 
+export const edit = async () => {
+  console.log("edit")
+};
+
 export const getOne = async (gameId: string) => {
   const singleGame = await request("GET", `${baseUrl}/games/${gameId}`);
   return singleGame;

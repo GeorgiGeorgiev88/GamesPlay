@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import * as gameService from "../../services/gameService";
+import { Link } from "react-router-dom";
 
 import Comments from "../comments/Comments";
 import CreateComment from "../comments/CreateComment";
 import AuthContext from "../../context/AuthContext";
 
 export default function GameDetail() {
-  const { _id: logUserId, email } = useContext(AuthContext); 
+  const { _id: logUserId, email } = useContext(AuthContext);
   const [game, setGame] = useState(null);
   const [comments, setComments] = useState([]);
   const { gameId } = useParams();
@@ -25,12 +26,11 @@ export default function GameDetail() {
   }, [gameId]);
 
   const handleAddComment = (newComment) => {
-    
     const commentWithOwner = {
       ...newComment,
       owner: {
-        _id: logUserId,  
-        email,           
+        _id: logUserId,
+        email,
       },
     };
 
@@ -40,6 +40,7 @@ export default function GameDetail() {
   if (!game) {
     return <p>Loading...</p>;
   }
+
 
   return (
     <section id="game-details">
@@ -62,6 +63,16 @@ export default function GameDetail() {
             ) : (
               <p className="no-comment">No comments.</p>
             )}
+            {game._ownerId === logUserId ? (
+              <div className="buttons">
+                <Link to={`/edit/${game._id}`} className="button">
+                  Edit
+                </Link>
+                <a href="#" className="button">
+                  Delete
+                </a>
+              </div>
+            ) : null}
           </ul>
         </div>
       </div>

@@ -12,8 +12,9 @@ import Create from "./components/create/Create.jsx";
 import Logout from "./components/logout/Logout.jsx";
 import Register from "./components/register/Register.jsx";
 import GameDetail from "./components/gameDetail/GameDetail.jsx";
+import Edit from "./components/edit/Edit.jsx";
 import AuthContext from "./context/authContext.ts";
-import usePersistetState from "./components/hooks/usePersistedState.ts"
+import usePersistetState from "./components/hooks/usePersistedState.ts";
 
 interface AuthData {
   email: string;
@@ -27,7 +28,7 @@ function App() {
   //   return {};
   // });
 
-  const [auth,setAuth] = usePersistetState("auth",{});
+  const [auth, setAuth] = usePersistetState("auth", {});
 
   const navigate = useNavigate();
 
@@ -74,6 +75,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/games/:gameId" element={<GameDetail />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="/edit/:gameId" element={<Edit />} />
         </Routes>
       </div>
     </AuthContext.Provider>
