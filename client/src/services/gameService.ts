@@ -40,7 +40,7 @@ export const create = async (gameData: GameData) => {
 
 export const edit = async (gameData: GameData,gameId:string) => {
   console.log(gameData)
-  const result = await request("PATCH", `${baseUrl}/games/${gameId}`, gameData);
+  const result = await request("PUT", `${baseUrl}/games/${gameId}`, gameData);
   return result;
  };
 
