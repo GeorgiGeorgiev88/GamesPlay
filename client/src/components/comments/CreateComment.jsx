@@ -21,12 +21,17 @@ export default function CreateComment({ gameId, onAddComment }) {
       if (formData.comment === "") {
         alert("The field must be filled");
         return;
+      } 
+      if (!logUserId) {
+        alert("To write a comment, you must be a logged-in user!");
+        return;
       } else {
         const savedComment = await gameService.comment(commentWithId);
         onAddComment(savedComment);
         resetForm(); 
       }
     } catch (error) {
+      
       console.error("Failed to add comment:", error);
     }
   };

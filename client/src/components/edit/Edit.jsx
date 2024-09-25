@@ -23,9 +23,7 @@ export default function Edit() {
     e.preventDefault();
     
     try {
-     
-      await gameService.edit(formData, gameId);
-     
+      await gameService.edit(formData, gameId)
       navigate("/games"); 
     } catch (err) {
       console.log(err);
