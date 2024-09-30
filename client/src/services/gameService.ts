@@ -49,6 +49,10 @@ export const getOne = async (gameId: string) => {
   return singleGame;
 };
 
+export const deleteOne = async (gameId: string) => await request("DELETE", `${baseUrl}/games/${gameId}`);
+
+
+
 export const comment = async (comment: object) => {
   const result = await request("POST", `${baseUrl}/comment`, comment);
   return result;

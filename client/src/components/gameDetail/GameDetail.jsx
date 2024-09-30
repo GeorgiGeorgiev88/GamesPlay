@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import * as gameService from "../../services/gameService";
 import { Link } from "react-router-dom";
@@ -12,6 +12,7 @@ export default function GameDetail() {
   const [game, setGame] = useState(null);
   const [comments, setComments] = useState([]);
   const { gameId } = useParams();
+  const navigate = useNavigate()
 
   useEffect(() => {
     gameService
@@ -41,6 +42,14 @@ export default function GameDetail() {
     return <p>Loading...</p>;
   }
 
+  const deleteButtonClickHandler = async()=>{
+    const hasConfirm = confirm(`Are you sure you want to delete ${game.title}`);
+    if(hasConfirm){
+      await gameService.deleteOne(gameId);
+      navigate("/games");
+    }
+  }
+
 
   return (
     <section id="game-details">
@@ -65,12 +74,10 @@ export default function GameDetail() {
             )}
             {game._ownerId === logUserId ? (
               <div className="buttons">
-                <Link to={`/edit/${game._id}`} className="button">
+                <Link  to={`/edit/${game._id}`} className="button">
                   Edit
                 </Link>
-                <a href="#" className="button">
-                  Delete
-                </a>
+               <button className="button" onClick={deleteButtonClickHandler}>Delete</button>
               </div>
             ) : null}
           </ul>
