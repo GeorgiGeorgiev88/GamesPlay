@@ -14,6 +14,7 @@ import Register from "./components/register/Register.jsx";
 import GameDetail from "./components/gameDetail/GameDetail.jsx";
 import Edit from "./components/edit/Edit.jsx";
 import AuthContext from "./context/authContext.ts";
+import AuthGuard from "./components/guards/AuthGuard.jsx";
 import usePersistetState from "./components/hooks/usePersistedState.ts";
 
 interface AuthData {
@@ -71,11 +72,13 @@ function App() {
           <Route path={Path.Home} element={<Home />} />
           <Route path="/games" element={<GameList />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/create" element={<Create />} />
           <Route path="/register" element={<Register />} />
           <Route path="/games/:gameId" element={<GameDetail />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/edit/:gameId" element={<Edit />} />
+          <Route element={<AuthGuard />}>
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/create" element={<Create />} />
+            <Route path="/edit/:gameId" element={<Edit />} />
+          </Route>
         </Routes>
       </div>
     </AuthContext.Provider>
