@@ -57,3 +57,7 @@ export const comment = async (comment: object) => {
   const result = await request("POST", `${baseUrl}/comment`, comment);
   return result;
 };
+
+
+
+export const removeComment = async (commentId: string) => await request("DELETE", `${baseUrl}/comment/${commentId}`);

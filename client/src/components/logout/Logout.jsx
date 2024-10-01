@@ -12,7 +12,7 @@ export default function Logout() {
   useEffect(() => {
     logout()
       .then(() => logoutHandler())
-      .catch(() => navigate(Path.Home));
+      .catch(() => logoutHandler(), navigate(Path.Home));
   }, []);
 
   return null;

@@ -1,4 +1,4 @@
-import { useParams,useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import * as gameService from "../../services/gameService";
 import { Link } from "react-router-dom";
@@ -38,18 +38,21 @@ export default function GameDetail() {
     setComments((prevComments) => [...prevComments, commentWithOwner]);
   };
 
+  const handleDeleteComment = (commentId) => {
+    setComments((prevComments) => prevComments.filter(comment => comment._id !== commentId));
+  };
+
   if (!game) {
     return <p>Loading...</p>;
   }
 
-  const deleteButtonClickHandler = async()=>{
+  const deleteButtonClickHandler = async () => {
     const hasConfirm = confirm(`Are you sure you want to delete ${game.title}`);
-    if(hasConfirm){
+    if (hasConfirm) {
       await gameService.deleteOne(gameId);
       navigate("/games");
     }
-  }
-
+  };
 
   return (
     <section id="game-details">
@@ -67,17 +70,23 @@ export default function GameDetail() {
           <ul>
             {comments.length > 0 ? (
               comments.map((comment) => (
-                <Comments key={comment._id} {...comment} />
+                <Comments
+                  key={comment._id}
+                  commnetId={comment._id}
+                  comment={comment.comment} 
+                  owner={comment.owner}
+                  onDeleteComment={handleDeleteComment} 
+                />
               ))
             ) : (
               <p className="no-comment">No comments.</p>
             )}
             {game._ownerId === logUserId ? (
               <div className="buttons">
-                <Link  to={`/edit/${game._id}`} className="button">
+                <Link to={`/edit/${game._id}`} className="button">
                   Edit
                 </Link>
-               <button className="button" onClick={deleteButtonClickHandler}>Delete</button>
+                <button className="button" onClick={deleteButtonClickHandler}>Delete</button>
               </div>
             ) : null}
           </ul>
