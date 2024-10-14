@@ -34,11 +34,17 @@ function App() {
   const navigate = useNavigate();
 
   const loginSubmitHandler = async (userData: AuthData) => {
-    const result = await login(userData);
-    setAuth(result);
-    localStorage.setItem("accessToken", result.accessToken);
-    navigate(Path.Home);
+    try {
+      const result = await login(userData);
+      setAuth(result);
+      localStorage.setItem("accessToken", result.accessToken);
+      navigate(Path.Home);
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Login failed! Please check your credentials and try again.");
+    }
   };
+  
 
   const registerSubmitHandler = async (userData: AuthData) => {
     if (userData.password !== userData.confirmPassword) {
