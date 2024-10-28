@@ -24,10 +24,7 @@ interface AuthData {
 }
 
 function App() {
-  // const [auth, setAuth] = useState(() => {
-  //   localStorage.removeItem("accessToken");
-  //   return {};
-  // });
+  
 
   const [auth, setAuth] = usePersistetState("auth", {});
 
